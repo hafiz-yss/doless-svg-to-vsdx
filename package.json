@@ -1,0 +1,10 @@
+{
+  "name": "doless-svg-to-vsdx",
+  "version": "1.0.0",
+  "description": "Client-side SVG to Microsoft Visio (.vsdx) converter",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}
