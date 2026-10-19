@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <title>DoLess — SVG to Visio Converter</title>
+  <!-- Satoshi & Plus Jakarta Sans (matching honour.pxxl.pro typography) -->
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="./vendor/jszip.min.js"></script>
+</head>
+<body id="top">
+  <!-- Fixed Architectural Guide Rails (53rem Central Column Frame) -->
+  <div class="guide-rails" aria-hidden="true">
+    <div class="guide-rails-inner">
+      <div class="rail-line rail-left"></div>
+      <div class="rail-line rail-right"></div>
+    </div>
+  </div>
+
+  <!-- Floating Liquid-Glass Navigation Dock -->
+  <header class="floating-header">
+    <div class="liquidGlass-wrapper">
+      <div class="liquidGlass-effect"></div>
+      <div class="liquidGlass-tint"></div>
+      <div class="liquidGlass-shine"></div>
+
+      <nav class="liquidGlass-nav" aria-label="Primary Navigation">
+        <a href="#top" class="dock-icon-btn" aria-label="Home">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+            <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          </svg>
+          <span class="dock-tooltip">Top</span>
+        </a>
+
+        <div class="dock-divider"></div>
+
+        <a href="#workspace" class="dock-icon-btn" aria-label="Converter Workspace">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" x2="12" y1="3" y2="15"></line>
+          </svg>
+          <span class="dock-tooltip">Workspace</span>
+        </a>
+
+        <a href="#examples" class="dock-icon-btn" aria-label="Example Diagrams">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+            <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+            <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+            <rect width="7" height="7" x="3" y="14" rx="1"></rect>
+          </svg>
+          <span class="dock-tooltip">Examples</span>
+        </a>
+
+        <a href="#features" class="dock-icon-btn" aria-label="What Gets Preserved">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+          <span class="dock-tooltip">Features</span>
+        </a>
+
+        <div class="dock-divider"></div>
+
+        <button type="button" id="nav-upload-btn" class="dock-cta-btn">
+          <span>Upload SVG</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Editorial Column (53rem) -->
+  <main class="page-main">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="status-badge">
+        <span class="status-dot">
+          <svg width="5" height="5" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 0L9.33013 2.5V7.5L5 10L0.669873 7.5V2.5L5 0Z" fill="white"></path>
+          </svg>
+        </span>
+        <span>SVG to Visio Converter</span>
+      </div>
+
+      <div class="hero-headings">
+        <h1 class="hero-title">Transform SVG into Visio.</h1>
+        <h2 class="hero-subtitle">Structure &amp; Design Intact.</h2>
+        <p class="hero-lead">
+          Drop your SVG diagram below and download a clean, fully editable Microsoft Visio
+          (<code>.vsdx</code>) file. Groups, curves, arrows, and multi-line text boxes stay intact.
+        </p>
+      </div>
+    </section>
+
+    <!-- 1. Dedicated Converter Workspace Section -->
+    <section id="workspace" class="workspace-section">
+      <div id="error-banner" class="error-banner" hidden></div>
+
+      <!-- Hidden File Input -->
+      <input type="file" id="svg-file-input" accept=".svg,image/svg+xml" hidden />
+
+      <!-- Distinctive Dark-Bordered Workspace Card -->
+      <div id="workspace-card" class="framed-card workspace-card-prominent">
+        <!-- STATE 1: Blank Animated Upload State (Only this shows when no file is loaded) -->
+        <div id="empty-workspace-state" class="empty-stage-wrapper" role="button" tabindex="0" aria-label="Drop or select an SVG file">
+          <div class="empty-stage-inner">
+            <!-- Primary Action Button at the Top (Consistent Solid Black) -->
+            <button type="button" id="empty-browse-btn" class="btn-black-slide empty-top-cta">
+              <span class="btn-slide-label">Choose .svg File</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </button>
+
+            <!-- Animated SVG -> VSDX Vector Graphic -->
+            <div class="transfer-illustration" aria-hidden="true">
+              <div class="node-card node-svg">
+                <div class="node-shape-mini">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="6" cy="6" r="3"></circle>
+                    <circle cx="18" cy="18" r="3"></circle>
+                    <path d="M8.59 8.59 15.42 15.42"></path>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                  </svg>
+                </div>
+                <span class="node-tag">.SVG</span>
+              </div>
+
+              <div class="flow-bridge">
+                <svg width="110" height="32" viewBox="0 0 110 32" fill="none">
+                  <path class="flow-dash-line" d="M 4 16 C 35 4, 75 28, 102 16" stroke="#18181b" stroke-width="1.8" stroke-dasharray="4 5" stroke-linecap="round" />
+                  <circle class="flow-pulse-dot" cx="55" cy="16" r="4.5" fill="#18181b" />
+                </svg>
+              </div>
+
+              <div class="node-card node-vsdx">
+                <div class="node-shape-mini is-visio">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                  </svg>
+                </div>
+                <span class="node-tag">.VSDX</span>
+              </div>
+            </div>
+
+            <h3 class="empty-title">Or drop your .svg file anywhere here</h3>
+            <p class="empty-subtitle">
+              Your diagram will appear here for inspection before you download the Visio file.<br />
+              Processed 100% privately in your browser.
+            </p>
+          </div>
+        </div>
+
+        <!-- STATE 2: Loaded Diagram Preview & Controls (Only shows when an item is loaded) -->
+        <div id="loaded-workspace-state" hidden>
+          <!-- Top Control Deck: Choose Another .svg flexed directly with Soft Red Close Button at Opposite End -->
+          <div class="workspace-top-deck">
+            <div class="top-action-bar">
+              <button type="button" id="replace-file-btn" class="btn-black-slide btn-header-size">
+                <span class="btn-slide-label">Choose Another .svg</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                  <path d="m9 18 6-6-6-6"></path>
+                </svg>
+              </button>
+
+              <button type="button" id="clear-workspace-btn" class="btn-close-stage" title="Close preview" aria-label="Close preview">✕</button>
+            </div>
+
+            <!-- Conversion Toggles & Zoom Row (Flexed cleanly side-by-side) -->
+            <div class="top-controls-strip">
+              <div class="top-options-bar">
+                <label class="inline-check-toggle">
+                  <input type="checkbox" id="opt-preserve-groups" checked />
+                  <span class="toggle-box"></span>
+                  <span class="toggle-text">Keep grouped objects</span>
+                </label>
+
+                <label class="inline-check-toggle">
+                  <input type="checkbox" id="opt-merge-text" checked />
+                  <span class="toggle-box"></span>
+                  <span class="toggle-text">Merge multi-line text</span>
+                </label>
+              </div>
+
+              <div class="zoom-cluster" aria-label="Zoom Controls">
+                <button type="button" id="zoom-out-btn" class="zoom-btn" title="Zoom Out">−</button>
+                <span id="zoom-label" class="zoom-readout">100%</span>
+                <button type="button" id="zoom-in-btn" class="zoom-btn" title="Zoom In">+</button>
+                <button type="button" id="zoom-reset-btn" class="zoom-btn zoom-reset">Fit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Framed Canvas Preview (Outer frame clips corners cleanly, inner container scrolls) -->
+          <div class="card-pad-frame">
+            <div class="stage-frame-outer">
+              <div id="svg-stage-container" class="inner-stage-window"></div>
+            </div>
+          </div>
+
+          <!-- Bottom Export Footer -->
+          <div class="card-export-footer">
+            <div class="export-action-row">
+              <div class="filename-input-group">
+                <input
+                  type="text"
+                  id="output-filename"
+                  class="tactile-input-clean"
+                  value="diagram"
+                  placeholder="diagram-name"
+                  aria-label="Output file name"
+                />
+                <span class="ext-badge">.vsdx</span>
+              </div>
+
+              <button type="button" id="download-vsdx-btn" class="btn-black-slide">
+                <span class="btn-slide-label">Download .vsdx</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                  <path d="m9 18 6-6-6-6"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Separate Examples Showcase Section (Styled after honour.pxxl.pro Project Grid) -->
+    <section id="examples" class="examples-section">
+      <div class="examples-header">
+        <h2 class="examples-heading">No SVG Handy? Try an Example.</h2>
+        <p class="examples-sub">
+          Load a sample vector diagram into the workspace above to see how groups, text boxes, and connectors convert.
+        </p>
+      </div>
+
+      <div class="examples-grid">
+        <!-- Example Card 1: Cloud Architecture Flowchart -->
+        <article class="framed-card example-project-card" data-sample-card="architecture">
+          <div class="example-thumb-pad">
+            <div class="example-thumb-window" id="thumb-architecture"></div>
+          </div>
+          <div class="example-card-body">
+            <h3 class="example-card-title">Cloud Architecture Flowchart</h3>
+            <p class="example-card-desc">
+              Multi-tier system diagram with service groups, multi-line node boxes, dashed boundaries, and 1D arrow connectors.
+            </p>
+            <button type="button" class="btn-gray-slide" data-load-sample="architecture">
+              <span class="btn-slide-label">Preview in Workspace</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </button>
+          </div>
+        </article>
+
+        <!-- Example Card 2: Vector Rocket Illustration -->
+        <article class="framed-card example-project-card" data-sample-card="illustration">
+          <div class="example-thumb-pad">
+            <div class="example-thumb-window" id="thumb-illustration"></div>
+          </div>
+          <div class="example-card-body">
+            <h3 class="example-card-title">Rocket &amp; Orbit Vector Art</h3>
+            <p class="example-card-desc">
+              Layered vector illustration featuring cubic Bezier curves, elliptical arcs, rotated groups, and gradient fills.
+            </p>
+            <button type="button" class="btn-gray-slide" data-load-sample="illustration">
+              <span class="btn-slide-label">Preview in Workspace</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </button>
+          </div>
+        </article>
+
+        <!-- Example Card 3: Analytics Dashboard UI Wireframe -->
+        <article class="framed-card example-project-card" data-sample-card="wireframe">
+          <div class="example-thumb-pad">
+            <div class="example-thumb-window" id="thumb-wireframe"></div>
+          </div>
+          <div class="example-card-body">
+            <h3 class="example-card-title">Analytics UI Wireframe</h3>
+            <p class="example-card-desc">
+              Product dashboard wireframe with sidebar navigation, KPI metric cards, bar charts, and smooth spline curves.
+            </p>
+            <button type="button" class="btn-gray-slide" data-load-sample="wireframe">
+              <span class="btn-slide-label">Preview in Workspace</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Editorial Feature Breakdown -->
+    <section id="features" class="editorial-section">
+      <div class="hairline-divider"></div>
+
+      <h2 class="section-heading">What Gets Preserved</h2>
+
+      <div class="experience-list">
+        <div class="experience-row">
+          <div class="exp-meta">01 — Layer Structure</div>
+          <p class="exp-role">
+            Grouped objects and nested layers stay grouped as native Visio group shapes so you can move or ungroup them freely.
+          </p>
+        </div>
+
+        <div class="experience-row">
+          <div class="exp-meta">02 — Smart Typography</div>
+          <p class="exp-role">
+            Stacked lines inside flowchart boxes automatically combine into a single editable multi-line text box.
+          </p>
+        </div>
+
+        <div class="experience-row">
+          <div class="exp-meta">03 — Vectors &amp; Arrows</div>
+          <p class="exp-role">
+            Shapes, Bezier curves, and connecting arrows map directly to crisp Visio geometry and 1D connectors.
+          </p>
+        </div>
+      </div>
+
+      <div class="hairline-divider"></div>
+    </section>
+
+    <!-- Minimalist Footer -->
+    <footer class="site-footer">
+      <p>© DevMonk • DoLess, SVG to Visio • All rights reserved</p>
+    </footer>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
