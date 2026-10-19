@@ -482,7 +482,7 @@ export function parseSvgToIntermediateTree(svgText, options = {}) {
     dpi = 96,
     preserveGroups = true,
     detectConnectors = true,
-    mergeTextLines = false
+    mergeTextLines = true
   } = options;
 
   const parser = new DOMParser();
