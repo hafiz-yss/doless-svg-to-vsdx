@@ -5,7 +5,7 @@ import {
 } from './svg-to-vsdx.js';
 import { SVG_SAMPLES } from './samples.js';
 
-const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB limit
+const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB limit
 
 const state = {
   baseFilename: 'diagram',
