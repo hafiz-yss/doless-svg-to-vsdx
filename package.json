@@ -1,10 +1,16 @@
 {
   "name": "doless-svg-to-vsdx",
   "version": "1.0.0",
-  "description": "Client-side SVG to Microsoft Visio (.vsdx) converter",
+  "description": "Privacy-first client-side SVG to Microsoft Visio (.vsdx) converter that preserves nested group structure, vector geometry, 1D connectors, and multi-line text boxes.",
+  "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node tests/verify.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "license": "MIT"
 }
