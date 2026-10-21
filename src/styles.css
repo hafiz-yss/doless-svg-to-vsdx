@@ -236,7 +236,7 @@ code {
 .hero-section {
   width: 100%;
   max-width: 53rem;
-  padding: 146px 4.5rem 2.25rem;
+  padding: 72px 4.5rem 2.25rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -246,7 +246,7 @@ code {
 
 @media (max-width: 768px) {
   .hero-section {
-    padding: 124px 1.5rem 1.75rem;
+    padding: 48px 1.5rem 1.75rem;
   }
 }
 
@@ -397,6 +397,8 @@ code {
   justify-content: center;
   gap: 7px;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -472,6 +474,9 @@ code {
   align-items: center;
   flex-shrink: 1;
   min-width: 24px;
+  position: relative;
+  z-index: 1;
+  margin: 0 -8px;
 }
 
 .flow-bridge-svg {
@@ -541,32 +546,58 @@ code {
 }
 
 .flow-dash-line {
-  animation: dashFlow 1.6s linear infinite;
+  opacity: 0.45;
 }
 
-.flow-pulse-dot {
-  animation: pulseDot 2s ease-in-out infinite;
+.flow-particle {
+  offset-rotate: 0deg;
+  will-change: offset-distance, opacity;
 }
 
-.flow-pulse-dot-delayed {
-  animation-delay: 0.65s;
+.flow-particle-1 {
+  offset-path: path('M -4 16 C 22 5, 54 27, 80 16');
+  animation: travelSegment1 3.2s linear infinite;
 }
 
-@keyframes dashFlow {
-  to {
-    stroke-dashoffset: -18;
-  }
+.flow-particle-2 {
+  offset-path: path('M -4 16 C 22 27, 54 5, 80 16');
+  animation: travelSegment2 3.2s linear infinite;
 }
 
-@keyframes pulseDot {
-  0%,
-  100% {
-    transform: scale(0.85);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scale(1.25);
+@keyframes travelSegment1 {
+  0% {
+    offset-distance: 0%;
     opacity: 1;
+  }
+  35% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  35.1%,
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes travelSegment2 {
+  0%,
+  46.9% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  47% {
+    offset-distance: 0%;
+    opacity: 1;
+  }
+  82% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  82.1%,
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
   }
 }
 
@@ -884,6 +915,7 @@ code {
 /* Consistent Solid Black Primary Sliding Button */
 .btn-black-slide {
   background: #000000;
+  white-space: nowrap;
   color: #ffffff;
   border: none;
   border-radius: 14px;
@@ -921,6 +953,36 @@ code {
 .btn-black-slide:disabled {
   opacity: 0.65;
   cursor: wait;
+}
+
+.btn-black-slide.btn-header-size {
+  padding: 10px 18px;
+  font-size: 13.5px;
+  border-radius: 12px;
+}
+
+@media (max-width: 640px) {
+  .workspace-top-deck {
+    padding: 14px 14px 12px;
+    gap: 12px;
+  }
+  .btn-black-slide.btn-header-size {
+    padding: 9px 14px;
+    font-size: 12.5px;
+    border-radius: 11px;
+  }
+  .btn-close-stage {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    flex-shrink: 0;
+  }
+  .top-options-bar {
+    gap: 14px;
+  }
+  .toggle-text {
+    font-size: 13px;
+  }
 }
 
 /* Consistent Soft Gray Sliding Button (for Example Showcase Cards) */
@@ -1137,9 +1199,9 @@ code {
 }
 
 .exp-meta {
-  color: var(--text-light);
-  font-size: 13px;
-  font-weight: 500;
+  color: var(--text-black);
+  font-size: 14.5px;
+  font-weight: 700;
 }
 
 .exp-role {
