@@ -380,11 +380,13 @@ code {
   justify-content: center;
   gap: 8px;
   margin-bottom: 24px;
+  max-width: 100%;
 }
 
 .node-card {
-  width: 78px;
-  height: 86px;
+  width: 94px;
+  height: 98px;
+  padding: 10px 6px;
   background: #ffffff;
   border: 1.5px solid var(--border-dark);
   border-radius: 18px;
@@ -393,37 +395,48 @@ code {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
+  flex-shrink: 0;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .node-svg {
-  transform: rotate(-6deg);
+  transform: rotate(-5deg);
   animation: floatLeft 4s ease-in-out infinite;
 }
 
+.node-middle {
+  transform: translateY(-3px);
+  animation: floatCenter 4s ease-in-out infinite;
+}
+
 .node-vsdx {
-  transform: rotate(6deg);
+  transform: rotate(5deg);
   animation: floatRight 4s ease-in-out infinite;
 }
 
 .empty-stage-wrapper:hover .node-svg {
-  transform: rotate(-10deg) translateX(-4px) scale(1.04);
+  transform: rotate(-8deg) translateX(-4px) scale(1.04);
+}
+
+.empty-stage-wrapper:hover .node-middle {
+  transform: translateY(-6px) scale(1.05);
 }
 
 .empty-stage-wrapper:hover .node-vsdx {
-  transform: rotate(10deg) translateX(4px) scale(1.04);
+  transform: rotate(8deg) translateX(4px) scale(1.04);
 }
 
 .node-shape-mini {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 11px;
   background: var(--bg-soft);
   color: var(--text-black);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .node-shape-mini.is-visio {
@@ -431,16 +444,100 @@ code {
   color: var(--bg-white);
 }
 
+.node-labels {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1.15;
+}
+
 .node-tag {
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   color: var(--text-black);
+  white-space: nowrap;
+}
+
+.node-sub {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .flow-bridge {
   display: flex;
   align-items: center;
+  flex-shrink: 1;
+  min-width: 24px;
+}
+
+.flow-bridge-svg {
+  width: 68px;
+  height: 32px;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .empty-stage-wrapper {
+    padding: 12px;
+  }
+
+  .empty-stage-inner {
+    padding: 32px 12px;
+    min-height: 320px;
+  }
+
+  .transfer-illustration {
+    gap: 4px;
+    width: 100%;
+    padding: 0 4px;
+  }
+
+  .node-card {
+    width: 74px;
+    height: 82px;
+    padding: 8px 4px;
+    border-radius: 14px;
+    gap: 5px;
+  }
+
+  .node-shape-mini {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+  }
+
+  .node-shape-mini svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .node-tag {
+    font-size: 9.5px;
+  }
+
+  .node-sub {
+    font-size: 8.5px;
+  }
+
+  .flow-bridge-svg {
+    width: 34px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .node-card {
+    width: 66px;
+    height: 76px;
+  }
+
+  .flow-bridge-svg {
+    width: 24px;
+  }
 }
 
 .flow-dash-line {
@@ -449,6 +546,10 @@ code {
 
 .flow-pulse-dot {
   animation: pulseDot 2s ease-in-out infinite;
+}
+
+.flow-pulse-dot-delayed {
+  animation-delay: 0.65s;
 }
 
 @keyframes dashFlow {
@@ -472,20 +573,30 @@ code {
 @keyframes floatLeft {
   0%,
   100% {
-    transform: rotate(-6deg) translateY(0);
+    transform: rotate(-5deg) translateY(0);
   }
   50% {
-    transform: rotate(-6deg) translateY(-5px);
+    transform: rotate(-5deg) translateY(-5px);
+  }
+}
+
+@keyframes floatCenter {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(4px);
   }
 }
 
 @keyframes floatRight {
   0%,
   100% {
-    transform: rotate(6deg) translateY(0);
+    transform: rotate(5deg) translateY(0);
   }
   50% {
-    transform: rotate(6deg) translateY(5px);
+    transform: rotate(5deg) translateY(5px);
   }
 }
 
